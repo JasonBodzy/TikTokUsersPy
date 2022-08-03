@@ -1,4 +1,7 @@
 from selenium import webdriver
+from main import User
+from main import Video
+from main import TikTokScraper
 
 """
 TikTokUsersPy

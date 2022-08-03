@@ -1,4 +1,4 @@
-<h1>TikTokUserPy</h1>
+<h1>TikTokUsersPy</h1>
 
 <p>This library can be used to scrape user data from tiktok in Python. It currently runs off of selenium webdriver set up from google chrome. The pypi library for this library is currently depricated and not working.<p>
 

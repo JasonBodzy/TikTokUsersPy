@@ -1,3 +1,7 @@
+<h1>TikTokUserPy</h1>
+
+<p>This library can be used to scrape user data from tiktok in Python. It currently runs off of selenium webdriver set up from google chrome. The pypi library for this library is currently depricated and not working.<p>
+
 <h2>Setup</h2>
 
 <code>
@@ -15,7 +19,6 @@
 
 <p>This is the code to scrape a user by their tiktok username and print their account data and video data to the console.</p>
 
-<hr>
 
 <h2>Classes and functions</h2>
 

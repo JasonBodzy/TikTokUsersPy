@@ -3,9 +3,11 @@
 <code>
 </br>scraper = TikTokScraper()
 </code>
+<br>
 <code>
 </br>therock = scraper.scrape_user("therock") 
 </code>
+<br>
 <code>
 </br>print(therock.to_string()) 
 </code>

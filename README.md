@@ -1,9 +1,9 @@
 <h2>Setup</h2>
 
 <code>
-<br/>scraper = TikTokScraper()
-<br/>therock = scraper.scrape_user("therock") 
-<br/>print(therock.to_string()) 
+</br>scraper = TikTokScraper()
+</br>therock = scraper.scrape_user("therock") 
+</br>print(therock.to_string()) 
 </code>
 
 <p>This is the code to scrape a user by their tiktok username and print their account data and video data to the console.</p>

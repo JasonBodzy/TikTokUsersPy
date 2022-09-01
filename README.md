@@ -30,3 +30,9 @@
 
 <h3>Video Class</h3>
 <p> The video class contains data for tiktok videos including views, video bio, comments, likes, and date posted. This class also contains a <code>to_string()</code> function which returns all  this data formatted.</p>
+
+<hr>
+
+<h3>React/Express with Sheets</h3>
+
+<p>Added example with python scraper uplaoding data to google sheet api which is scraped from express backend. React example set to interact with express to write needed values to sheets being constantly scanned by python.<p>

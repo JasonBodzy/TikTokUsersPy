@@ -6,6 +6,9 @@ from selenium.webdriver.common.by import By
 import traceback
 import config
 
+import pygsheets
+import json
+
 # Presets from tiktok
 account_followers_xpath = config.account_followers_xpath
 total_likes_xpath = config.total_likes_xpath
@@ -65,9 +68,11 @@ class TikTokScraper:
             PATH = "./chromedriver"
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument("--mute-audio")
+            chrome_options.add_argument("--incognito")
             driver = webdriver.Chrome(PATH, options=chrome_options)
+            driver.delete_all_cookies()
             driver.minimize_window()
-            driver.get("http://tiktok.com/@" + name)
+            driver.get("http://tiktok.com/@" + name + "/")
             driver.minimize_window()
 
             followers = driver.find_element(By.XPATH, account_followers_xpath).text
@@ -75,6 +80,7 @@ class TikTokScraper:
             recent_video_views = driver.find_element(By.XPATH, recent_views_1_xpath).text
             account_bio = driver.find_element(By.XPATH, account_bio_xpath).text
         except:
+            traceback.print_exc()
             print("Error scraping user, either has 0 videos or is private account")
             driver.quit()
             return User("Error", "Error Scraping this user", 0, 0, 0, [])
@@ -97,7 +103,7 @@ class TikTokScraper:
                 arrow.click()
                 number_of_videos += 1
         except Exception:
-            # traceback.print_exc()
+            #traceback.print_exc()
             has_more_videos = False
 
         xbutton = driver.find_element(By.XPATH, xbutton_xpath)
@@ -124,7 +130,36 @@ class TikTokScraper:
         return user
 
 
-scraper = TikTokScraper()
+gsheets = pygsheets.authorize(service_file='./creds.json')
+sheet = gsheets.open('TikTokData')
+worksheet = sheet[0]
+while True:
+    username = (worksheet.get_value((1, 3)))
+    while (username == "NULL"):
+        username = (worksheet.get_value((1, 3)))
+        time.sleep(0.5)
 
-username = input("Enter a tik tok username: ")
-print(scraper.scrape_user(username).to_string())
+    scraper = TikTokScraper()
+
+    user = scraper.scrape_user(username)
+
+    #worksheet.update_value((2, 3), user.to_string())
+    worksheet.update_value((2, 3), json.dumps(user, default=lambda o: o.__dict__))
+    worksheet.update_value((1, 3), "NULL")
+
+def sheet_write():
+
+    worksheet.clear("B1", "B200")
+
+    worksheet.update_value((2, 2), user.followers)
+    worksheet.update_value((3, 2), user.total_likes)
+    worksheet.update_value((4, 2), user.bio)
+
+    for i in range(len(user.videos)):
+        worksheet.update_value((6 * i + 5, 2), "Video " + str(i))
+        worksheet.update_value((6 * i + 6, 2), user.videos[i].bio)
+        worksheet.update_value((6 * i + 7, 2), user.videos[i].date)
+        worksheet.update_value((6 * i + 8, 2), user.videos[i].views)
+        worksheet.update_value((6 * i + 9, 2), user.videos[i].likes)
+        worksheet.update_value((6 * i + 10, 2), user.videos[i].comments)
+
